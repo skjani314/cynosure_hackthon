@@ -1,0 +1,184 @@
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import { AiFillHome } from "react-icons/ai";
+import { MdHomeRepairService, MdOutlineMenu, MdClose } from "react-icons/md";
+import { FaClipboardList, FaSearch, FaMapMarkerAlt } from "react-icons/fa";
+import { IoChatbubbleEllipsesSharp } from "react-icons/io5";
+
+const PatientNavbar = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [location, setLocation] = useState("");
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchSuggestions, setSearchSuggestions] = useState([]);
+
+  // Fetch user's current location
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        // Reverse Geocoding API
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
+        );
+        const data = await response.json();
+        if (data.address) {
+          setLocation(data.address.city || data.address.town || "Unknown");
+        }
+      });
+    }
+  }, []);
+
+  // Fetch location suggestions
+  const fetchLocationSuggestions = async (query) => {
+    if (query.length < 2) {
+      setLocationSuggestions([]);
+      return;
+    }
+    const response = await fetch(
+      `https://nominatim.openstreetmap.org/search?format=json&q=${query}`
+    );
+    const data = await response.json();
+    setLocationSuggestions(data.map((place) => place.display_name));
+  };
+
+  // Fetch search suggestions
+  const fetchSearchSuggestions = async (query) => {
+    if (query.length < 2) {
+      setSearchSuggestions([]);
+      return;
+    }
+
+    // Mock search suggestions
+    const mockData = ["Heart Specialist", "Dental Clinic", "Cancer Treatment", "City Hospital", "General Physician"];
+    setSearchSuggestions(mockData.filter((item) => item.toLowerCase().includes(query.toLowerCase())));
+  };
+
+  return (
+    <header className="fixed top-0 left-0 w-full bg-gradient-to-r from-[#fbc2eb] to-[#a6c1ee] shadow-lg z-50">
+      <div className="container mx-auto flex items-center justify-between px-4 md:px-6 py-3">
+        
+        {/* Logo */}
+        <h1 className="text-xl md:text-2xl font-bold text-white">🏥 Hospital</h1>
+
+        {/* Search & Location (Hidden on Small Screens) */}
+        <div className="hidden md:flex flex-grow mx-6 items-center space-x-4">
+          {/* Search Input */}
+          <div className="relative w-full max-w-md">
+            <input
+              type="text"
+              placeholder="Search..."
+              value={searchQuery}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+                fetchSearchSuggestions(e.target.value);
+              }}
+              className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none"
+            />
+            <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full text-gray-700">
+              <FaSearch />
+            </button>
+            {/* Search Suggestions */}
+            {searchSuggestions.length > 0 && (
+              <ul className="absolute left-0 w-full bg-white border border-gray-300 rounded-md mt-1 shadow-lg">
+                {searchSuggestions.map((suggestion, index) => (
+                  <li
+                    key={index}
+                    className="p-2 hover:bg-gray-200 cursor-pointer"
+                    onClick={() => {
+                      setSearchQuery(suggestion);
+                      setSearchSuggestions([]);
+                    }}
+                  >
+                    {suggestion}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          {/* Location Input */}
+          <div className="relative flex items-center bg-white px-4 py-2 rounded-full border border-gray-300">
+            <FaMapMarkerAlt className="text-gray-600 mr-2" />
+            <input
+              type="text"
+              placeholder="Enter location"
+              value={location}
+              onChange={(e) => {
+                setLocation(e.target.value);
+                fetchLocationSuggestions(e.target.value);
+              }}
+              className="outline-none w-full bg-transparent"
+            />
+            {/* Location Suggestions */}
+            {locationSuggestions.length > 0 && (
+              <ul className="absolute left-0 w-full bg-white border border-gray-300 rounded-md mt-1 shadow-lg">
+                {locationSuggestions.map((suggestion, index) => (
+                  <li
+                    key={index}
+                    className="p-2 hover:bg-gray-200 cursor-pointer"
+                    onClick={() => {
+                      setLocation(suggestion);
+                      setLocationSuggestions([]);
+                    }}
+                  >
+                    {suggestion}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </div>
+
+        {/* Desktop Menu */}
+        <nav className="hidden md:flex space-x-6">
+          <Link to="/patient/home" className="hover:text-white flex items-center space-x-2">
+            <AiFillHome className="text-lg" /> <span>Home</span>
+          </Link>
+          <Link to="/patient/services" className="hover:text-white flex items-center space-x-2">
+            <MdHomeRepairService className="text-lg" /> <span>Services</span>
+          </Link>
+          <Link to="/patient/patients" className="hover:text-white flex items-center space-x-2">
+            <FaClipboardList className="text-lg" /> <span>Patients</span>
+          </Link>
+          <Link to="/patient/contactus" className="hover:text-white flex items-center space-x-2">
+            <IoChatbubbleEllipsesSharp className="text-lg" /> <span>Contact</span>
+          </Link>
+        </nav>
+
+        {/* Mobile Menu Button */}
+        <button onClick={() => setMobileMenuOpen(true)} className="md:hidden text-2xl text-white">
+          <MdOutlineMenu />
+        </button>
+      </div>
+
+      {/* Mobile Menu */}
+      {mobileMenuOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-end z-50">
+          <div className="w-64 bg-white shadow-md p-4">
+            <button onClick={() => setMobileMenuOpen(false)} className="text-right text-2xl">
+              <MdClose />
+            </button>
+            <nav className="flex flex-col space-y-4 mt-4">
+              <Link to="/patient/home" className="flex items-center space-x-2">
+                <AiFillHome className="text-lg" /> <span>Home</span>
+              </Link>
+              <Link to="/patient/services" className="flex items-center space-x-2">
+                <MdHomeRepairService className="text-lg" /> <span>Services</span>
+              </Link>
+              <Link to="/patient/patients" className="flex items-center space-x-2">
+                <FaClipboardList className="text-lg" /> <span>Patients</span>
+              </Link>
+              <Link to="/patient/contactus" className="flex items-center space-x-2">
+                <IoChatbubbleEllipsesSharp className="text-lg" /> <span>Contact</span>
+              </Link>
+            </nav>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default PatientNavbar;
