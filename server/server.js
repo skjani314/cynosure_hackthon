@@ -3,6 +3,7 @@ import cors from 'cors';
 import ConnectDb from './config/Connect.js'; 
 import 'dotenv/config'
 import AuthRouter from './routes/auth.js';
+import { error } from 'console';
 
 const app = express();
 app.use(express.json());
@@ -14,6 +15,11 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth',AuthRouter);
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    return res.status(500).send({success:false,message:error})
+});
 
 app.listen(3000, () => {
     console.log(`http://localhost:3000`);
