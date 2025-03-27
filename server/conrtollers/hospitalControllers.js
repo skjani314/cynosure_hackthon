@@ -76,7 +76,7 @@ export const UpdateHospital = async (req, res, next) => {
 
 export const showDoctors = async (req, res, next) => {
   try {
-    const { hospitalId } = req.body;
+    const hospitalId = req.id;
     if (!hospitalId) {
       return res.json({
         success: false,
@@ -102,8 +102,8 @@ export const showDoctors = async (req, res, next) => {
 
 export const addDoctor = async (req, res, next) => {
   try {
-    const { name, email, rating, active, speciality, hospitalId } = req.body;
-    if (!name || !email || !rating || !speciality || !hospitalId) {
+    const { name, email, rating, active, speciality, hospitalId,pincode } = req.body;
+    if (!name || !email || !rating || !speciality || !hospitalId || !pincode) {
       return res
         .status(400)
         .json({ success: false, message: "Please provide all details" });
@@ -114,6 +114,8 @@ export const addDoctor = async (req, res, next) => {
         .status(404)
         .json({ success: false, message: "Hospital not found" });
     }
+                const hashpassword = await bcrypt.hash("rgukt@123", 10);
+  
     const newDoctor = new DoctorModel({
       name,
       email,
@@ -121,6 +123,8 @@ export const addDoctor = async (req, res, next) => {
       active,
       speciality,
       hospitalId,
+      password:hashpassword,
+      pincode
     });
 
     await newDoctor.save();
