@@ -118,10 +118,10 @@ export const addDoctor = async (req, res, next) => {
       rating,
       active,
       speciality,
-      hospital: hospitalId,
+      hospitalId,
     });
 
-    await hospital.save();
+    await newDoctor.save();
     res
       .status(201)
       .json({

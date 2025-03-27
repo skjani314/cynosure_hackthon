@@ -15,7 +15,7 @@ import PatientHome from "./pages/patient/homePage.jsx";
 import PatientServices from "./pages/patient/services.jsx";
 import PatientPatients from "./pages/patient/patients.jsx";
 import PatientContactUs from "./pages/patient/contactUs.jsx";
-import PatinetBookForm from "./pages/patient/bookForm.jsx";
+import PatinetBookForm from ".pages/patient/bookForm.jsx";
 
 
 
