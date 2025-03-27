@@ -21,6 +21,11 @@ app.get('/', (req, res) => {
 
 app.use('/auth',AuthRouter);
 
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    return res.status(500).send({success:false,message:error})
+});
+
 app.listen(3000, () => {
     console.log(`http://localhost:3000`);
 });
