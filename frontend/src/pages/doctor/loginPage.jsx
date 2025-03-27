@@ -16,7 +16,7 @@ const DoctorLogin = () => {
         email: formData.email,
         password: formData.password,
         role: "doctor",});
-       
+        
     } catch (error) {
       toast.error(error.message)
       console.log(response)
