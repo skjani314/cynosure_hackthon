@@ -25,12 +25,13 @@ import HospitalProfile from "./pages/hospital/profile.jsx";
 import HospitalForm from "./pages/hospital/hospitalForm.jsx"
 import HospitalDashboard from "./pages/hospital/dashBoard.jsx";
 import HospitalLogin from "./pages/hospital/loginForm.jsx";
+import ProfileUpdate from "./pages/ProfileUpdate.jsx";
 
 const App = () => {
   return (
 
     <>
-      <ToastContainer/>
+     
       <Routes>
         {/* Public Route */}
    
@@ -57,7 +58,7 @@ const App = () => {
         <Route path="/hospital/profile" element={<HospitalProfile/>}/>
         <Route path="/hospital/form" element={<HospitalForm/>}/>
         
-
+        <Route path='/profile' element={<ProfileUpdate/>}/>
 
 
 

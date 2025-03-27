@@ -34,7 +34,7 @@ if(role=='patient'){
 }
 else{
     data=await appointmentModel.find({d_id:new mongoose.Types.ObjectId(id)}).populate({
-        path:"patients",
+        path:"pid",
         select:"-password",
     });
 }

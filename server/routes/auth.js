@@ -10,6 +10,6 @@ AuthRouter.post('/send-otp',AuthOtp);
 AuthRouter.post('/forget',ForgetPassword);
 AuthRouter.post('/forgetverify',ForgetVerify);
 AuthRouter.post('/passchange',passChange);
-AuthRouter.get('/',getUser);
+AuthRouter.get('/',getUser,);
 
 export default AuthRouter;

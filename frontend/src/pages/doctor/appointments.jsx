@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -25,6 +25,8 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { Clock, UserCheck, Users, AlertCircle, X, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
  
 const DoctorDashboard = () => {
   const theme = useTheme();
@@ -32,7 +34,35 @@ const DoctorDashboard = () => {
   const navigate = useNavigate();
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+ const [appointments,setAppointments]=useState([])
 
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/appointments/get", {
+          params: { role: "doctor", id: "67e567c263232a1e3f91934d" },
+        });
+  
+        console.log("Appointments Data:", response.data);
+        setAppointments(response.data); 
+      } catch (error) {
+        console.error("Error fetching appointments:", error);
+      }
+    };
+  
+    fetchAppointments();
+    // console.log(appointments +"This is the one")
+  }, []); 
+  
+  useEffect(() => {
+    if (appointments.length > 0 && appointments[0]?.pid) {
+      console.log("Updated Appointments:", appointments[0].token);
+    } else {
+      console.log("No appointments found or invalid data.");
+    }
+  }, [appointments]); 
+  
   const doctor = {
     name: "Dr. Emily Watson",
     profilePic: "https://via.placeholder.com/50", // Replace with actual image
@@ -130,10 +160,10 @@ const DoctorDashboard = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {patients.map((patient) => (
-                <TableRow key={patient.id} hover>
+              {appointments.map((patient) => (
+                <TableRow key={patient._id} hover>
                   <TableCell>{patient.token}</TableCell>
-                  <TableCell>{patient.name}</TableCell>
+                  <TableCell>{patient.pid.name}</TableCell>
                   <TableCell align="center">
                     <Button variant="contained" onClick={() => setSelectedPatient(patient)}>
                       View More
@@ -156,9 +186,11 @@ const DoctorDashboard = () => {
           <DialogContent>
             {selectedPatient && (
               <Box textAlign="center">
-                <Avatar src={selectedPatient.profilePic} sx={{ width: 64, height: 64, mx: "auto", mb: 2 }} />
-                <Typography variant="h6">{selectedPatient.name}</Typography>
-                <Typography variant="body1">Age: {selectedPatient.age}</Typography>
+                <Avatar src={selectedPatient.pid.img} sx={{ width: 64, height: 64, mx: "auto", mb: 2 }} />
+                <Typography variant="h6">{selectedPatient.pid.name}</Typography>
+                <Typography variant="body1">Age: {selectedPatient.pid.age}</Typography>
+                <Typography variant="body1">Mobile: {selectedPatient.pid.mobile}</Typography>
+                <Typography variant="body1">Address: {selectedPatient.pid.address}</Typography>
                 <Typography variant="body1">Symptoms: {selectedPatient.symptoms}</Typography>
                 <Box mt={3} display="flex" justifyContent="space-around">
                   <Button variant="contained" color="error" onClick={() => handleDecline(selectedPatient.id)}>
