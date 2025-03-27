@@ -16,20 +16,14 @@ const HospitalLogin = () => {
     e.preventDefault();
 try{
 
-
-  const token = localStorage.getItem('accessToken');
-  const url = import.meta.env.VITE_BACKEND_URL + "/auth/";
+  const url = import.meta.env.VITE_BACKEND_URL + "/auth/login";
 
 const form_data=new FormData();
 form_data.append("email",formData.email);
 form_data.append("password",form_data.password);
+form_data.append("role","hospital");
 
-  const response = await axios.post(url,form_data ,{
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    }
-  });
+  const response = await axios.post(url,form_data);
   localStorage.setItem("accessToken", response.data);
 
 

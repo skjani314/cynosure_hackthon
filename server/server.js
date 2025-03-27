@@ -13,7 +13,9 @@ app.use(express.json());
 
 ConnectDb();
 connectCloudinary();
-app.use(cors());
+app.use(cors(
+    
+));
 app.use(upload.single('img'));
 app.get('/', (req, res) => {
     res.send(`<h2>Welcome to the server</h2>`);

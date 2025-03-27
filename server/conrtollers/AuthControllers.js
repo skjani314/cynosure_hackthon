@@ -16,11 +16,13 @@ let user=null;
 
 if(role=='patient'){
          user = await patientModel.findOne({email});
-         console.log(user)
 }else if(role=='doctor'){
   user=await doctorModel.findOne({email});
 }else{
     user =await HospitalModel.findOne({email});
+    console.log(email);
+    console.log(user);
+
 }
 
         if (!user) {
@@ -29,7 +31,8 @@ if(role=='patient'){
         else {
 
             const isMatch = await bcrypt.compare(password, user.password);
-
+         console.log(password);
+         console.log(user.password);
             if (isMatch) {
                 const accessToken = jwt.sign({ id: user._id, role}, process.env.KEY, { expiresIn: '7d' });
 

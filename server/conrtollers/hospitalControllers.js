@@ -1,23 +1,25 @@
 import HospitalModel from "../models/hostpitalModel.js";
 import DoctorModel from "../models/doctorModel.js";
+import bcrypt from 'bcrypt';
 
 export const createHospital = async (req, res, next) => {
   try {
-    const { email, password, name, location, description, img, doctors } =
+    const { email, password, name, location, description } =
       req.body;
-    if (!email || !name || !location || !description || !img || !doctors) {
+      console.log(req.body);
+    if (!email || !name || !location || !description || !password) {
       return res
         .status(400)
         .json({ success: false, message: "Please provide all details" });
     }
+                const hashpassword = await bcrypt.hash(password, 10);
     const hospital = new HospitalModel({
       email,
-      password,
+      password:hashpassword,
       name,
       location,
       description,
-      img,
-      doctors,
+
     });
     await hospital.save();
     return res
