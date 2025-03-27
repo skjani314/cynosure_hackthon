@@ -6,9 +6,11 @@ const patientSchema = new mongoose.Schema({
   password: { type: String, required: true },
   mobile:{type:String,required:true},
   img:{type:String,default:"https://www.google.com/imgres?q=user&imgurl=https%3A%2F%2Fstatic.vecteezy.com%2Fsystem%2Fresources%2Fpreviews%2F000%2F439%2F863%2Fnon_2x%2Fvector-users-icon.jpg&imgrefurl=https%3A%2F%2Fwww.vecteezy.com%2Ffree-vector%2Fuser-icon&docid=E3VnjqP3ez2tMM&tbnid=7249SWrC3zpm3M&vet=12ahUKEwjAo7a7_qmMAxUesVYBHay2NO4QM3oECBYQAA..i&w=490&h=490&hcb=2&ved=2ahUKEwjAo7a7_qmMAxUesVYBHay2NO4QM3oECBYQAA"},
-  
+  pincode:{type:Number,required:true},
+  address:{type:String,required:true},
+  age:{type:Number,required:true}
 });
 
-const doctorModel = mongoose.model("patients", doctorSchema);
+const patientModel = mongoose.model("patients", patientSchema);
 
-export default doctorModel;
+export default patientModel;
