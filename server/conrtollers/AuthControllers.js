@@ -3,9 +3,44 @@ import nodemailer from 'nodemailer';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import patientModel from "../models/patientModel.js";
+import doctorModel from "../models/doctorModel.js";
+import HospitalModel from "../models/hostpitalModel.js";
 
 
 const AuthLogin=async (req,res,next)=>{
+
+
+    try {
+        const { email, password,role } = req.body;
+let user=null;
+
+if(role=='patient'){
+         user = await patientModel.findOne({email});
+}else if(role=='doctor'){
+  user=await doctorModel.findOne({email});
+}else{
+    user =await HospitalModel.findOne({email});
+}
+
+        if (!user) {
+            next(new Error("User Not Found"));
+        }
+        else {
+
+            const isMatch = await bcrypt.compare(password, user.password);
+
+            if (isMatch) {
+                const accessToken = jwt.sign({ id: user._id, role: 'organizer' }, process.env.KEY, { expiresIn: '7d' });
+
+
+                return res.status(200).json(accessToken);
+            } else {
+                return res.status(401).json({ message: "Password incorrect" });
+            }
+        }
+    } catch (error) {
+        next(error);
+    }
 
 
 }
@@ -13,14 +48,11 @@ const AuthLogin=async (req,res,next)=>{
 const AuthRegister=async (req,res,next)=>{
 try{
 
-const {email,password,name,addresss,pincode,mobile,otp,age}=req.body;
+const {email,password,name,address,pincode,mobile,otp,age}=req.body;
 console.log(req.body);
-if(!email || !password || !name || !addresss || !pincode || !mobile || !otp || !age){
-  return  next(new Error("fill all required fields"));
-}
-else{
 
-    const otpRecord = await Otp.findOne({ email });
+
+    const otpRecord = await Otp.findOneAndUpdate({ email }, { password: hashpassword }, { new: true, runValidators: true });
     if (!otpRecord) {
         next(new Error('invalid Otp'));
     }
@@ -40,8 +72,6 @@ else{
 
     }
 
-
-}
 
 }
 catch(err){
@@ -120,10 +150,135 @@ const AuthOtp=async (req, res, next) => {
     }
     
     
+    const ForgetPassword = async (req, res, next) => {
+
+        try {
+    
+            const { email,role } = req.body;
+            
+            let user=null;
+
+            if(role=='patient'){
+                     user = await patientModel.findOne({ email });
+            }else if(role=='doctor'){
+              user=await doctorModel.findOne({email});
+            }else{
+                user =await HospitalModel.findOne({email});
+            }
+            if (!user) {
+                next(new Error("User Not Found"));
+            } else {
+    
+    
+                const token = jwt.sign({ email,role }, process.env.KEY, { expiresIn: '5m' });
+    
+    
+    
+                const transporter = nodemailer.createTransport({
+                    service: 'gmail',
+                    auth: {
+                        user: 'skilllinkforget@gmail.com',
+                        pass: process.env.EMAILPASSWORD
+                    }
+                });
+    
+                const mailOptions = {
+                    from: 'skilllinkforget@gmail.com',
+                    to: email,
+                    subject: 'Forget Password',
+                    html: `<html>
+                        <body>
+                          <h1>Hello,</h1>
+                          <p>Your Reset link is:<br></br> <strong>${process.env.FRONTENDURL + '/forgot/' + token}</strong></p>
+                          <p>Thank you!</p>
+                        </body>
+                      </html>`,
+                };
+    
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        console.log('Email sent: ' + info.response);
+                    }
+                });
+    
+                res.json(token);
+    
+            }
+        } catch (err) {
+    
+            next(err);
+    
+        }
+    
+    
+    }
+
+
+    const ForgetVerify = async (req, res, next) => {
+
+
+        try {
+    
+            const token = req.body.token;
+            await jwt.verify(token, process.env.KEY, (err, decode) => {
+    
+                if (err) {
+                    next(err);
+                } else {
+                    res.json({ verified: true });
+    
+                }
+    
+            })
+        } catch (err) {
+    
+            next(err);
+    
+        }
+    
+    }
+
+    
+    const passChange = async (req, res, next) => {
+
+        const { token } = req.body;
+        const pass = req.body.password;
+    
+        try {
+    
+            await jwt.verify(token, process.env.KEY, async (err, decode) => {
+    
+                if (err) {
+                    next(err)
+                } else {
+    
+                    const email = decode.email;
+                    const role =decode.role;
+                    const hashpassword = await bcrypt.hash(pass, 10);
+                    console.log(hashpassword)
+                   let user=null;
+                    if(role=='patient'){
+                        user = await patientModel.findOneAndUpdate({ email }, { password: hashpassword }, { new: true, runValidators: true });
+               }else if(role=='doctor'){
+                 user=await doctorModel.findOneAndUpdate({ email }, { password: hashpassword }, { new: true, runValidators: true });
+               }else{
+                   user =await HospitalModel.findOneAndUpdate({ email }, { password: hashpassword }, { new: true, runValidators: true });
+               }
+                    res.status(200).json("Password changed");
+    
+                }
+    
+    
+            })
+        } catch (err) {
+            next(err);
+        }
+    
+    }
 
 
 
 
-
-
-export {AuthLogin,AuthRegister,AuthOtp};
+export {AuthLogin,AuthRegister,AuthOtp,ForgetPassword,ForgetVerify,passChange};
