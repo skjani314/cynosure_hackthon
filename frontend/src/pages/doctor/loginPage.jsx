@@ -7,8 +7,18 @@ const DoctorLogin = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Doctor Logged In:", formData);
-    navigate("/doctor/dashboard"); 
+    
+
+    try {
+      const response = await axios.post("http://localhost:3000/auth/login", {
+        email: formData.email,
+        password: formData.password,
+        role: "doctor",});
+        
+    } catch (error) {
+      toast.error(error.message)
+      console.log(response)
+    }
   };
 
   return (
