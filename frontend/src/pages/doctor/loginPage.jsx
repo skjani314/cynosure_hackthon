@@ -1,13 +1,11 @@
-import axios from "axios";
 import React, { useState } from "react";
-import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const DoctorLogin = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     
 
