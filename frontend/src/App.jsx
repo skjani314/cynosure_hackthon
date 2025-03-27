@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
 import DoctorLogin from "./pages/doctor/loginPage.jsx";
@@ -12,14 +12,17 @@ import HospitalForm from "./pages/hospital/hospitalForm.jsx"
 import HospitalDashboard from "./pages/hospital/dashBoard.jsx";
 import HospitalLogin from "./pages/hospital/loginForm.jsx";
 import { userContex } from "./Context/Context.jsx";
+import { ToastContainer, toast } from "react-toastify"; 
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
-
-  const {just}=useContext(userContex)
-  console.log(just)
   return (
+
+    <>
+      <ToastContainer/>
       <Routes>
         {/* Public Route */}
+   
         <Route path="/" element={<HomePage />} />
 
         {/* Doctor Routes */}
@@ -36,13 +39,10 @@ const App = () => {
         <Route path="/hospital/navbar" element={<HospitalNavbar/>}/>
         <Route path="/hospital/profile" element={<HospitalProfile/>}/>
         <Route path="/hospital/form" element={<HospitalForm/>}/>
-
-
-
-
         {/* Catch-All Route for 404 */}
         <Route path="*" element={<h1>404 Not Found</h1>} />
       </Routes>
+      </>
   );
 };
 

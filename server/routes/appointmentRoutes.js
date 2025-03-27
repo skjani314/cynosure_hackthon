@@ -5,7 +5,7 @@ import { addAppointment, getAppointments, updateAppointment } from '../conrtolle
 const appointmentRouter = express.Router();
 
 appointmentRouter.post('/add',addAppointment);
-appointmentRouter.get('/',getAppointments);
+appointmentRouter.get('/get',getAppointments);
 appointmentRouter.put('/update',updateAppointment);
 
 export default appointmentRouter;

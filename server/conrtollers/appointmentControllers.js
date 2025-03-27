@@ -1,19 +1,10 @@
 import mongoose, { mongo } from "mongoose";
 import appointmentModel from "../models/appointmentModel.js";
 
-
-
-
-
 const addAppointment=async (req,res,next)=>{
-
-
-
 try{
 const {pid,d_id,}=req.body;
-
 const result=await appointmentModel.create({pid,d_id});
-
 res.json(result);
 }
 catch(err)

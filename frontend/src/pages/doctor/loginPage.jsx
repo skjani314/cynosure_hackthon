@@ -1,14 +1,26 @@
+import axios from "axios";
 import React, { useState } from "react";
+import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 
 const DoctorLogin = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Doctor Logged In:", formData);
-    navigate("/doctor/dashboard"); // Redirect to Doctor Dashboard after login
+    
+
+    try {
+      const response = await axios.post("http://localhost:3000/auth/login", {
+        email: formData.email,
+        password: formData.password,
+        role: "doctor",});
+       
+    } catch (error) {
+      toast.error(error.message)
+      console.log(response)
+    }
   };
 
   return (

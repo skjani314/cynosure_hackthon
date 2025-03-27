@@ -25,7 +25,7 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { Clock, UserCheck, Users, AlertCircle, X, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
+ 
 const DoctorDashboard = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
