@@ -16,6 +16,7 @@ let user=null;
 
 if(role=='patient'){
          user = await patientModel.findOne({email});
+         console.log(user)
 }else if(role=='doctor'){
   user=await doctorModel.findOne({email});
 }else{
@@ -52,7 +53,7 @@ const {email,password,name,address,pincode,mobile,otp,age}=req.body;
 console.log(req.body);
 
 
-    const otpRecord = await Otp.findOneAndUpdate({ email }, { password: hashpassword }, { new: true, runValidators: true });
+    const otpRecord = await Otp.findOne({ email });
     if (!otpRecord) {
         next(new Error('invalid Otp'));
     }

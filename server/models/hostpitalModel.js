@@ -7,7 +7,6 @@ const hospitalSchema = new mongoose.Schema({
     password:{type:String,required:true,password:'ongole@123'},
     name: { type: String, required: true },
     location: { type: String, required: true },
-    doctors: [{ type: mongoose.Schema.Types.ObjectId, ref: 'doctors' }]
 });
 
 const HospitalModel = mongoose.model('hospital', hospitalSchema);

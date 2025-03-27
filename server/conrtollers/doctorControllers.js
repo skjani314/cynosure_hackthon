@@ -1,6 +1,7 @@
 import doctorModel from "../models/doctorModel";
 import patientModel from "../models/patientModel";
 
+
 export const viewAppointments=async(req,res,next)=>
 {
       try {
