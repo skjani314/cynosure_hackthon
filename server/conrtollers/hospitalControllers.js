@@ -102,8 +102,8 @@ export const showDoctors = async (req, res, next) => {
 
 export const addDoctor = async (req, res, next) => {
   try {
-    const { name, email, rating, active, speciality, hospitalId } = req.body;
-    if (!name || !email || !rating || !speciality || !hospitalId) {
+    const { name, email, rating, active, speciality, hospitalId,pincode } = req.body;
+    if (!name || !email || !rating || !speciality || !hospitalId ||!pincode) {
       return res
         .status(400)
         .json({ success: false, message: "Please provide all details" });
@@ -121,6 +121,7 @@ export const addDoctor = async (req, res, next) => {
       active,
       speciality,
       hospitalId,
+      pincode,
     });
 
     await newDoctor.save();
@@ -136,7 +137,7 @@ export const addDoctor = async (req, res, next) => {
   }
 };
 
-//for updateing status
+//for updating status
 export const UpdateDoctorStatus = async (req, res, next) => {
   try {
     const { doctorId, active } = req.body;

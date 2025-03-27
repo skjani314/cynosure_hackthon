@@ -4,7 +4,7 @@ const doctorSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true },
   password: { type: String, required: true, default: 'rgukt@123' },
-
+  pincode:{type:String,required:true},
   rating: { type: Number, max: 5, min: 1, required: true },
   active:{type:Boolean,default:true},
   speciality: { type: String, required: true },
