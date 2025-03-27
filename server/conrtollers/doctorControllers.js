@@ -15,7 +15,9 @@ export const viewAppointments=async(req,res,next)=>
               res.json({success:false,message:"No crediential are available"});
            }
            const patients=await patientModel.find({doctoId})
+           res.status(200).json({success:true,message:"Doctor Added Sucessfullly"})
       } catch (error) {
         next(error)
       }
 }
+
