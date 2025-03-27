@@ -6,9 +6,16 @@ export const userContex=createContext()
 const ContextProvide = ({children}) => {
 
     const [query,setQuery]=useState();
-    const [response,setResponse]=useState()
+    const [response,setResponse]=useState();
+    const [user,setUser]=useState(null);
     const data={
-        query,setQuery,response,setResponse,just:'hi uday'
+        query,
+        setQuery,
+        response,
+        setResponse,
+        user,
+        setUser
+
     }
 
     const callGemini=async()=>

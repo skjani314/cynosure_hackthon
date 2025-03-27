@@ -31,7 +31,7 @@ if(role=='patient'){
             const isMatch = await bcrypt.compare(password, user.password);
 
             if (isMatch) {
-                const accessToken = jwt.sign({ id: user._id, role: 'organizer' }, process.env.KEY, { expiresIn: '7d' });
+                const accessToken = jwt.sign({ id: user._id, role}, process.env.KEY, { expiresIn: '7d' });
 
 
                 return res.status(200).json(accessToken);
@@ -281,5 +281,32 @@ const AuthOtp=async (req, res, next) => {
 
 
 
+const getUser=async (req,res,next)=>{
 
-export {AuthLogin,AuthRegister,AuthOtp,ForgetPassword,ForgetVerify,passChange};
+
+
+try{
+
+   const {role,id}=req.query; 
+    let user=null;
+
+    if(role=='patient'){
+             user = await patientModel.findById(id).select("-password");
+             console.log(user)
+    }else if(role=='doctor'){
+      user=await doctorModel.findById(id).select("-password");
+    }else{
+        user =await HospitalModel.findById(id).select("-password");
+    }
+res.json(user);
+
+}
+catch(err){
+    next(err);
+}
+
+}
+
+
+
+export {AuthLogin,AuthRegister,AuthOtp,ForgetPassword,ForgetVerify,passChange,getUser};
