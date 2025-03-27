@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PatientNavbar from "./navbar";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Calendar, ClipboardList, FileText, MessageSquare, User, Bell } from "lucide-react";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const PatientHome = () => {
   const quickActions = [
@@ -31,7 +33,26 @@ const PatientHome = () => {
       link: "/patient/messages"
     }
   ];
-  const [doctors,setDoctors]=useState();
+  const [doctors,setDoctors]=useState([]);
+
+  const getDoctors=async()=>{
+    try {
+      const response=await axios.post('http://localhost:3000/hospital/get-by-location',{
+        "pincode":"522403"
+    })
+    setDoctors(response.data.doctors)
+    } catch (error) {
+      toast.error(error);
+    }
+  }
+
+  useEffect(()=>
+  {
+       getDoctors();
+       
+  },)
+
+ 
   const upcomingAppointment = {
     doctor: "Dr. Emma Wilson",
     specialty: "Cardiologist",
@@ -102,17 +123,23 @@ const PatientHome = () => {
           >
             <h2 className="text-xl font-bold text-white mb-4">Recomended Doctors</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {quickActions.map((action, index) => (
+              {doctors.map((action, index) => (
                 <Link 
-                  key={index}
+                  key={action._id}
                   to={action.link}
                   className="bg-white/90 rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow flex flex-col h-full"
                 >
                   <div className="p-2 w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mb-4">
-                    {action.icon}
+                    <img src={action.img} alt="" className="rounded-full" />
                   </div>
-                  <h3 className="font-semibold text-gray-800 mb-2">{action.title}</h3>
-                  <p className="text-gray-600 text-sm">{action.description}</p>
+                  <h3 className="font-semibold text-gray-800 mb-2">{action.name}</h3>
+                  <p className="text-gray-600 text-sm">{action.speciality}</p>
+                  
+                  <div>
+                    {[...Array(action.rating)].map((_, index) => (
+                      <span key={index}>⭐</span>
+                    ))}
+                  </div>
                 </Link>
               ))}
             </div>
@@ -120,82 +147,10 @@ const PatientHome = () => {
 
           {/* Health Stats & Notifications */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Recent Health Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="lg:col-span-2 bg-white/90 rounded-xl shadow-md overflow-hidden"
-            >
-              <div className="p-6">
-                <h2 className="text-xl font-bold text-gray-800 mb-4">Recent Health Statistics</h2>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <div className="bg-blue-50 p-4 rounded-lg">
-                    <p className="text-sm text-blue-600 mb-1">Blood Pressure</p>
-                    <p className="text-2xl font-bold text-gray-900">120/80</p>
-                    <p className="text-xs text-gray-500">Last updated: 3 days ago</p>
-                  </div>
-                  <div className="bg-green-50 p-4 rounded-lg">
-                    <p className="text-sm text-green-600 mb-1">Heart Rate</p>
-                    <p className="text-2xl font-bold text-gray-900">72 bpm</p>
-                    <p className="text-xs text-gray-500">Last updated: 3 days ago</p>
-                  </div>
-                  <div className="bg-purple-50 p-4 rounded-lg">
-                    <p className="text-sm text-purple-600 mb-1">Weight</p>
-                    <p className="text-2xl font-bold text-gray-900">165 lbs</p>
-                    <p className="text-xs text-gray-500">Last updated: 1 week ago</p>
-                  </div>
-                </div>
-                <div className="mt-4 text-center">
-                  <Link 
-                    to="/patient/health-tracker"
-                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                  >
-                    View Complete Health Dashboard →
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
+            
+           
 
-            {/* Notifications */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="bg-white/90 rounded-xl shadow-md overflow-hidden"
-            >
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold text-gray-800">Notifications</h2>
-                  <Bell className="h-5 w-5 text-gray-500" />
-                </div>
-                <div className="space-y-4">
-                  <div className="border-l-4 border-blue-400 pl-3 py-2">
-                    <p className="text-sm font-medium text-gray-800">Appointment Reminder</p>
-                    <p className="text-xs text-gray-600">Your appointment with Dr. Emma Wilson is tomorrow at 9:30 AM</p>
-                    <p className="text-xs text-gray-400 mt-1">1 hour ago</p>
-                  </div>
-                  <div className="border-l-4 border-green-400 pl-3 py-2">
-                    <p className="text-sm font-medium text-gray-800">Prescription Refill</p>
-                    <p className="text-xs text-gray-600">Your prescription for Lisinopril is ready for pickup</p>
-                    <p className="text-xs text-gray-400 mt-1">3 hours ago</p>
-                  </div>
-                  <div className="border-l-4 border-amber-400 pl-3 py-2">
-                    <p className="text-sm font-medium text-gray-800">Lab Results</p>
-                    <p className="text-xs text-gray-600">Your recent blood test results are now available</p>
-                    <p className="text-xs text-gray-400 mt-1">Yesterday</p>
-                  </div>
-                </div>
-                <div className="mt-4 text-center">
-                  <Link 
-                    to="/patient/notifications"
-                    className="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                  >
-                    View All Notifications →
-                  </Link>
-                </div>
-              </div>
-            </motion.div>
+         
           </div>
         </div>
       </div>
