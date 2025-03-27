@@ -140,7 +140,7 @@ export const addDoctor = async (req, res, next) => {
   }
 };
 
-//for updateing status
+//for updating status
 export const UpdateDoctorStatus = async (req, res, next) => {
   try {
     const { doctorId, active } = req.body;

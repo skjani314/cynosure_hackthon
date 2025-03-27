@@ -281,12 +281,7 @@ const AuthOtp=async (req, res, next) => {
     
     }
 
-
-
 const getUser=async (req,res,next)=>{
-
-
-
 try{
 
    const role=req.role;
@@ -310,6 +305,60 @@ catch(err){
 
 }
 
+const UpdateProfile=async(req,res,next)=>
+{
+    try {
+        const {id}=req.id;
+        const {role}=req.role;
+
+        
+        if(!id)
+        {
+            next(new Error("Un Authorized"))
+        }
+      
+        if(role==='doctor')
+        {
+            const user=await doctorModel.findById(id);
+            const {name,img,active}=req.body;
+            const doctor=new doctorModel({
+                name,img,active
+            },{new:true});
+
+            await doctor.save();
+
+            res.status(200).json({success:true,message:"Doctor Details update successfully"})
+        }
+        else if(role==='patient')
+        {
+            
+            const {name,img,pincode,address}=req.body;
+            const patient=new patientModel({
+                name,img,pincode,address
+            },{new:true});
+
+            await patient.save();
+
+            res.status(200).json({success:true,message:"Patient Details update successfully"})
+
+        }
+        else if(role=='hospital')
+        {    const {name,img,location,description}=req.body;
+            const hospital=new HospitalModel({
+                name,img,location,description
+            },{new:true});
+
+            await hospital.save();
+
+            res.status(200).json({success:true,message:"Patient Details update successfully"})
+        }
+
+        
+        
+    } catch (error) {
+        next(error.message)
+    }
+}
 
 
-export {AuthLogin,AuthRegister,AuthOtp,ForgetPassword,ForgetVerify,passChange,getUser};
+export {AuthLogin,AuthRegister,AuthOtp,ForgetPassword,ForgetVerify,passChange,getUser,UpdateProfile};

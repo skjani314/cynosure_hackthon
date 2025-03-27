@@ -1,5 +1,5 @@
 import express from 'express';
-import {AuthRegister,AuthLogin,AuthOtp, ForgetPassword, ForgetVerify, passChange, getUser} from '../conrtollers/AuthControllers.js';
+import {AuthRegister,AuthLogin,AuthOtp, ForgetPassword, ForgetVerify, passChange, getUser, UpdateProfile} from '../conrtollers/AuthControllers.js';
 import patientMiddleWare from '../middlewares/patientMiddleWare.js';
 
 const AuthRouter = express.Router();
@@ -11,6 +11,8 @@ AuthRouter.post('/forget',ForgetPassword);
 AuthRouter.post('/forgetverify',ForgetVerify);
 AuthRouter.post('/passchange',passChange);
 AuthRouter.get('/',patientMiddleWare,getUser);
+
+AuthRouter.put('profile-update',getUser,UpdateProfile)
 
 
 export default AuthRouter;
