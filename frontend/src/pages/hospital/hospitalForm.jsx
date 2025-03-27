@@ -12,6 +12,7 @@ const {user}=useContext(userContex);
     email:"",
     speciality: "",
     rating:"",
+    pincode:""
 
   });
 
@@ -28,6 +29,7 @@ const {user}=useContext(userContex);
     form_data.append("speciality",formData.speciality);
     form_data.append("name",formData.name);
     form_data.append("hospitalId",user._id);
+    form_data.append("pincode",formData.pincode);
 
     const url = import.meta.env.VITE_BACKEND_URL + "/hospital/add-doctor";
     const accessToken = localStorage.getItem('accessToken');
@@ -62,6 +64,7 @@ const {user}=useContext(userContex);
           <input type="text" name="email" value={formData.email} onChange={handleChange} placeholder="Email" required className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300" />
           <input type="text" name="speciality" value={formData.speciality} onChange={handleChange} placeholder="Speciality" required className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300" />
           <input type="number" name="rating" value={formData.rating} onChange={handleChange} placeholder="Rating" className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300" />
+          <input type="text" name="pincode" value={formData.pincode} onChange={handleChange} placeholder="Pincode" required className="w-full px-4 py-2 border rounded-lg focus:ring focus:ring-blue-300" />
 
           <div className="flex justify-end gap-2">
             <button type="button" onClick={() => navigate("/hospital/dashboard")} className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">Cancel</button>

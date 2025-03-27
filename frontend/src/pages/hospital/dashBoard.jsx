@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Plus, Pencil, Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom"; // ✅ Import useNavigate
 import toast from "react-hot-toast";
 import HospitalNavbar from "./navbar";
+import axios from "axios";
+import DoctorCard from "../doctor/DoctorCard.jsx";
 
 function HospitalDashboard() {
   const navigate = useNavigate(); // ✅ Initialize navigation
@@ -25,6 +27,43 @@ function HospitalDashboard() {
       image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
     }
   ]);
+
+
+
+const getDoctors=async ()=>{
+
+
+  try{
+
+    const url = import.meta.env.VITE_BACKEND_URL + "/hospital/getdoctors";
+    const token = localStorage.getItem('accessToken');
+
+const data=await axios.get(url, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  },
+})
+console.log(data.data.doctors)
+setDoctors(data.data.doctors);
+  }
+  catch(err){
+    console.log(err);
+  }
+
+
+}
+
+
+
+
+  useEffect(()=>{
+
+getDoctors()
+  },[])
+
+
+
 
   const handleDeleteDoctor = (id) => {
     setDoctors(doctors.filter((doctor) => doctor.id !== id));
@@ -50,23 +89,10 @@ function HospitalDashboard() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {doctors.map((doctor) => (
-            <div key={doctor.id} className="bg-white/90 backdrop-blur-lg rounded-xl p-6 shadow-lg">
-              <img
-                src={doctor.image}
-                alt={doctor.name}
-                className="w-full h-48 object-cover rounded-lg mb-4"
-              />
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">{doctor.name}</h3>
-              <p className="text-gray-600">{doctor.specialty}</p>
-              <p className="text-gray-600">{doctor.experience} years experience</p>
-              <p className="text-gray-600 mb-4">{doctor.availability}</p>
-              <div className="flex justify-end gap-2">
-                <button className="p-2 text-red-600 hover:bg-red-50 rounded-lg" onClick={() => handleDeleteDoctor(doctor.id)}>
-                  <Trash2 className="h-5 w-5" />
-                </button>
-              </div>
-            </div>
+          {doctors.map((doctor,index) => (
+
+            <DoctorCard doctor={doctor} key={index} />
+
           ))}
         </div>
       </div>

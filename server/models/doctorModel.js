@@ -8,7 +8,7 @@ const doctorSchema = new mongoose.Schema({
   rating: { type: Number, max: 5, min: 1, required: true },
   active:{type:Boolean,default:true},
   speciality: { type: String, required: true },
-  img:{type:String,default:"https://www.google.com/imgres?q=doctor&imgurl=https%3A%2F%2Fwww.shutterstock.com%2Fimage-vector%2Fmale-doctor-smiling-happy-face-600nw-2481032615.jpg&imgrefurl=https%3A%2F%2Fwww.shutterstock.com%2Fsearch%2Fdoctor-character&docid=0gRqjQaWOKSHuM&tbnid=BTIkBfkQ9CwtCM&vet=12ahUKEwiewcv4-qmMAxUZslYBHU9wH3QQM3oECBkQAA..i&w=600&h=600&hcb=2&ved=2ahUKEwiewcv4-qmMAxUZslYBHU9wH3QQM3oECBkQAA"},
+  img:{type:String,default:"https://www.shutterstock.com/image-vector/male-doctor-smiling-happy-face-600nw-2481032615.jpg"},
   hospitalId:{
       type:mongoose.Schema.Types.ObjectId,
       ref:'hospital',
