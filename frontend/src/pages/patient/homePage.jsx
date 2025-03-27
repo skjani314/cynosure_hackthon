@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import PatientNavbar from "./navbar";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
@@ -31,7 +31,7 @@ const PatientHome = () => {
       link: "/patient/messages"
     }
   ];
-
+  const [doctors,setDoctors]=useState();
   const upcomingAppointment = {
     doctor: "Dr. Emma Wilson",
     specialty: "Cardiologist",
@@ -100,7 +100,7 @@ const PatientHome = () => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="mb-8"
           >
-            <h2 className="text-xl font-bold text-white mb-4">Quick Actions</h2>
+            <h2 className="text-xl font-bold text-white mb-4">Recomended Doctors</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {quickActions.map((action, index) => (
                 <Link 

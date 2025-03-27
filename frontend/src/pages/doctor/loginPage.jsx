@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const DoctorLogin = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     
 
@@ -14,10 +15,13 @@ const DoctorLogin = () => {
         email: formData.email,
         password: formData.password,
         role: "doctor",});
-        
+        console.log(response);
+
+        navigate('/doctor/dashboard')
+      
     } catch (error) {
-      toast.error(error.message)
-      console.log(response)
+      
+      console.log(error)
     }
   };
 

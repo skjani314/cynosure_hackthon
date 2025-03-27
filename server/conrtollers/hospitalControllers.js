@@ -154,3 +154,23 @@ export const UpdateDoctorStatus = async (req, res, next) => {
     next(error);
   }
 };
+
+//Get Doctor By Location
+
+export const getDoctorByLocation=async(req,res,next)=>
+{
+      try {
+        const {pincode}=req.body;
+        const doctors=await DoctorModel.find({pincode});
+        if(!doctors)
+        {
+          next(new Error("Doctors not found in the Location"))
+        }
+
+        res.json({success:true,message:"Doctors fetched Successfully",doctors})
+        
+
+      } catch (error) {
+        next(error)
+      }
+}
