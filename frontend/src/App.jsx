@@ -15,7 +15,6 @@ import PatientHome from "./pages/patient/homePage.jsx";
 import PatientServices from "./pages/patient/services.jsx";
 import PatientPatients from "./pages/patient/patients.jsx";
 import PatientContactUs from "./pages/patient/contactUs.jsx";
-import PatinetBookForm from ".pages/patient/bookForm.jsx";
 
 
 
@@ -45,7 +44,6 @@ const App = () => {
         <Route path="/patient/services" element={<PatientServices/>}/>
         <Route path="/patient/patients" element={<PatientPatients/>}/>
         <Route path="/patient/contactus" element={<PatientContactUs/>}/>
-        <Route path="/patient/bookform" element={<PatinetBookForm/>}/>
 
 
          {/* hospital Routes */}
