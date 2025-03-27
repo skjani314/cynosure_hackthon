@@ -1,20 +1,52 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { userContex } from "../../Context/Context";
+import { toast } from "react-toastify";
 
 const HospitalLogin = () => {
   const navigate = useNavigate();
+  const {user,setUser}=useContext(userContex);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async  (e) => {
     e.preventDefault();
+try{
 
-    // Simulate authentication (Replace this with API call)
-    if (formData.email && formData.password) {
-      navigate("/hospital/dashboard"); // ✅ Redirect to hospital dashboard
+  const url = import.meta.env.VITE_BACKEND_URL + "/auth/login";
+
+const form_data=new FormData();
+form_data.append("email",formData.email);
+form_data.append("password",form_data.password);
+form_data.append("role","hospital");
+
+  const response = await axios.post(url,form_data);
+  localStorage.setItem("accessToken", response.data);
+
+
+ const result = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     }
+  });
+  setUser(result.data);
+  setFormData({
+    email: "",
+    password: "",
+  })
+  toast.success("logged in successfully");
+  navigate("/hospital/dashboard"); 
+
+}catch(err){
+
+  console.group(err);
+  toast.error("something went wrong");
+}
+
   };
 
   return (
