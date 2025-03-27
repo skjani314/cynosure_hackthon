@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
 import DoctorLogin from "./pages/doctor/loginPage.jsx";
@@ -11,8 +11,12 @@ import HospitalForm from "./pages/hospital/hospitalForm.jsx"
 
 import HospitalDashboard from "./pages/hospital/dashBoard.jsx";
 import HospitalLogin from "./pages/hospital/loginForm.jsx";
+import { userContex } from "./Context/Context.jsx";
 
 const App = () => {
+
+  const {just}=useContext(userContex)
+  console.log(just)
   return (
       <Routes>
         {/* Public Route */}
