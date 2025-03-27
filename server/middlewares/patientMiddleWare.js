@@ -3,13 +3,18 @@ import patientModel from "../models/patientModel.js";
 import HospitalModel from "../models/hostpitalModel.js";
 import doctorModel from "../models/doctorModel.js";
 
-const patientMiddleWare=async (res,req,next)=>{
+const patientMiddleWare=async (req,res,next)=>{
 
 
 try{
+    console.log(req.headers);
 
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return res.status(401).json({ error: "Unauthorized: No token provided" });
+    }
 
-    const token = req.headers.authorization.split(" ")[1];
+    const token = authHeader.split(" ")[1]; 
     if (!token) {
         return next(new Error("User Not Found"));
     }
@@ -17,19 +22,20 @@ try{
 
 
         const token_decode = await jwt.verify(token, process.env.KEY);
-        const { id } = token_decode;
+        const { id,role } = token_decode;
         console.log(token_decode);
 
         req.id = id;
+        req.role=role;
         let user=null;
 
         if(role=='patient'){
-                 user = await patientModel.findOne({email});
+                 user = await patientModel.findById(id);
                  console.log(user)
         }else if(role=='doctor'){
-          user=await doctorModel.findOne({email});
+          user=await doctorModel.findById(id);
         }else{
-            user =await HospitalModel.findOne({email});
+            user =await HospitalModel.findById(id);
         }
         if (user != null) {
             next();
@@ -49,3 +55,5 @@ catch(err){
 
 
 }
+
+export default patientMiddleWare;
