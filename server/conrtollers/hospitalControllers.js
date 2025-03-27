@@ -177,3 +177,24 @@ export const getDoctorByLocation=async(req,res,next)=>
         next(error)
       }
 }
+
+export const getDoctorBySymptoms=async (req,res,next)=>{
+
+
+  try {
+    const {pincode,specialist}=req.body;
+    console.log(req.body);
+    const doctors=await DoctorModel.find({pincode,speciality:specialist});
+    if(!doctors)
+    {
+      next(new Error("Doctors not found in the Location"))
+    }
+
+    res.json({success:true,message:"Doctors fetched Successfully",doctors})
+    
+
+  } catch (error) {
+    next(error)
+  }
+
+}
