@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage.jsx";
 
@@ -25,12 +25,57 @@ import HospitalProfile from "./pages/hospital/profile.jsx";
 import HospitalForm from "./pages/hospital/hospitalForm.jsx"
 import HospitalDashboard from "./pages/hospital/dashBoard.jsx";
 import HospitalLogin from "./pages/hospital/loginForm.jsx";
+import axios from "axios";
+import { userContex } from "./Context/Context.jsx";
 
 const App = () => {
+
+const {user,setUser}=useContext(userContex);
+
+const getUser=async ()=>{
+
+
+
+try{
+
+  const url = import.meta.env.VITE_BACKEND_URL + "/auth/";
+  const token = localStorage.getItem('accessToken');
+console.log(token);
+const result=await axios.get(url, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json",
+  },
+});
+setUser(result.data);
+console.log(result);
+}
+catch(err){
+  console.log(err);
+}
+
+
+
+}
+
+useEffect(()=>{
+
+
+try{
+
+  getUser();
+}
+catch(err){
+  console.log(err);
+}
+
+},[]);
+
+
+
   return (
 
     <>
-      <ToastContainer/>
       <Routes>
         {/* Public Route */}
    

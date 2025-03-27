@@ -22,7 +22,6 @@ if(role=='patient'){
     user =await HospitalModel.findOne({email});
     console.log(email);
     console.log(user);
-
 }
 
         if (!user) {
@@ -290,7 +289,8 @@ const getUser=async (req,res,next)=>{
 
 try{
 
-   const {role,id}=req.query; 
+   const role=req.role;
+   const id=req.id; 
     let user=null;
 
     if(role=='patient'){

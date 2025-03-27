@@ -17,23 +17,15 @@ const HospitalLogin = () => {
 try{
 
   const url = import.meta.env.VITE_BACKEND_URL + "/auth/login";
-
+console.log(formData);
 const form_data=new FormData();
 form_data.append("email",formData.email);
-form_data.append("password",form_data.password);
+form_data.append("password",formData.password);
 form_data.append("role","hospital");
 
   const response = await axios.post(url,form_data);
   localStorage.setItem("accessToken", response.data);
-
-
- const result = await axios.get(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    }
-  });
-  setUser(result.data);
+  setUser(response.data);
   setFormData({
     email: "",
     password: "",
@@ -43,7 +35,7 @@ form_data.append("role","hospital");
 
 }catch(err){
 
-  console.group(err);
+  console.error(err);
   toast.error("something went wrong");
 }
 
