@@ -167,7 +167,7 @@ console.log(search_result);
                   className="bg-white/90 rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow flex flex-col h-full"
                 >
                   <div className="p-2 w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mb-4">
-                    <img src={action.img} alt="" className="rounded-full" />
+                    <img src={action.img} alt="" className="rounded-full " />
                   </div>
                   <h3 className="font-semibold text-gray-800 mb-2">{action.name}</h3>
                   <p className="text-gray-600 text-sm">{action.speciality}</p>
@@ -175,8 +175,10 @@ console.log(search_result);
                   <div>
                     {[...Array(action.rating)].map((_, index) => (
                       <span key={index}>⭐</span>
+                      
                     ))}
                   </div>
+                  <button className="w-full bg-amber-200 px-5 py-3 items-center justify-center mt-9 hover:cursor-pointer">Book Appointment</button>
                 </Link>
               ))}
             </div>
