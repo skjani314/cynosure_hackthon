@@ -16,12 +16,14 @@ let user=null;
 
 if(role=='patient'){
          user = await patientModel.findOne({email});
+         console.log(email);
+         console.log(user);
+
 }else if(role=='doctor'){
   user=await doctorModel.findOne({email});
 }else{
     user =await HospitalModel.findOne({email});
     console.log(email);
-    console.log(user);
 }
 
         if (!user) {

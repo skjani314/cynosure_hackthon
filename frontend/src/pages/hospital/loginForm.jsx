@@ -25,8 +25,15 @@ form_data.append("role","hospital");
 
   const response = await axios.post(url,form_data);
   localStorage.setItem("accessToken", response.data);
-  setUser(response.data);
-  setFormData({
+  const url2 = import.meta.env.VITE_BACKEND_URL + "/auth/";
+  const result=await axios.get(url2, {
+    headers: {
+      Authorization: `Bearer ${response.data}`,
+      "Content-Type": "application/json",
+    },
+  });
+  setUser(result.data); 
+   setFormData({ 
     email: "",
     password: "",
   })
