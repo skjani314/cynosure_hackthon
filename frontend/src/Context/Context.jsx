@@ -10,6 +10,7 @@ const ContextProvide = ({children}) => {
 const [symptoms,setSymptoms]=useState("");
     const [response,setResponse]=useState();
     const [user,setUser]=useState(null);
+    const [suggestion,setSuggestion]=useState("")
 
     const callGemini=async(query)=>
       {
@@ -32,7 +33,9 @@ const [symptoms,setSymptoms]=useState("");
         setResponse,
         user,
         setUser,
-        callGemini
+        callGemini,
+        suggestion,
+        setSuggestion
 
     }
 

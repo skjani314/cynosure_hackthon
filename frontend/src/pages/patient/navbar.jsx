@@ -18,7 +18,7 @@ const PatientNavbar = ({doctors,pincode,setPincode,setSearchResult}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState([]);
 const navigate=useNavigate();
-const {symptoms,setSymptoms,callGemini}=useContext(userContex);
+const {symptoms,setSymptoms,callGemini,setSuggestion,suggestion}=useContext(userContex);
 const [isModel,setModel]=useState(false);
 
   // Fetch user's current location
@@ -86,6 +86,10 @@ console.log(result);
 setSearchResult(prev=>([...result.data.doctors]))
 setModel(false);
 setSymptoms("");
+const geminisuggestion=await callGemini(symptoms)
+setSuggestion(geminisuggestion)
+
+console.log(geminisuggestion)
 
 }
 catch(err){
@@ -98,11 +102,11 @@ console.log(err);
 
 }
 
-useEffect(()=>{
+// useEffect(()=>{
 
 
 
-},[])
+// },[])
 
 
 

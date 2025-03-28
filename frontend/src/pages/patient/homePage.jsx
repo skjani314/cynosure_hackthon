@@ -10,7 +10,7 @@ import { userContex } from "../../Context/Context";
 
 const PatientHome = () => {
 
-  const {user} =useContext(userContex)
+  const {user,callGemini,symptoms,suggestion} =useContext(userContex)
 const [pincode,setPincode]=useState(523002);
 
 
@@ -69,6 +69,9 @@ const bookApointment=async(d_id)=>
   useEffect(()=>
   {
        getDoctors();
+      
+       
+       
        
   },[pincode]);
 console.log(search_result);
@@ -175,7 +178,10 @@ console.log(search_result);
             className="mb-8"
           >
             <h2 className="text-xl font-bold text-white mb-4">Recomended Doctors</h2>
+
+             {doctors.length>0?<>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+             
               {doctors.map((action, index) => (
                 <Link 
                   key={action._id}
@@ -197,7 +203,9 @@ console.log(search_result);
                   <button className="w-full bg-amber-200 px-5 py-3 items-center justify-center mt-9 hover:cursor-pointer" onClick={()=>{bookApointment(action.id)}}>Book Appointment</button>
                 </Link>
               ))}
-            </div>
+            </div></>:<>
+              <div className="w-fill items-center bg-white py-3 px-3 rounded-2xl">Based on Symptoms you we suggest you to  consult &nbsp;{suggestion}&nbsp; we can't find near you</div>
+            </>}
           </motion.div>
 
           {/* Health Stats & Notifications */}

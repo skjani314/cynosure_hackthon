@@ -35,6 +35,7 @@ import { useTheme } from "@mui/material/styles";
 import { Clock, UserCheck, Users, AlertCircle, X, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+
   
 const services = () => {
   const theme = useTheme();
@@ -161,7 +162,7 @@ const services = () => {
         {/* Patient Details Modal */}
         <Dialog open={!!selectedPatient} onClose={() => setSelectedPatient(null)} fullWidth maxWidth="sm">
           <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            Patient Details
+            Doctor Details
             <Button onClick={() => setSelectedPatient(null)}>
               <X size={24} />
             </Button>
@@ -169,20 +170,11 @@ const services = () => {
           <DialogContent>
             {selectedPatient && (
               <Box textAlign="center">
-                <Avatar src={selectedPatient.pid.img} sx={{ width: 64, height: 64, mx: "auto", mb: 2 }} />
-                <Typography variant="h6">{selectedPatient.did.name}</Typography>
-                <Typography variant="body1">Age: {selectedPatient.pid.age}</Typography>
-                <Typography variant="body1">Mobile: {selectedPatient.pid.mobile}</Typography>
-                <Typography variant="body1">Address: {selectedPatient.pid.address}</Typography>
-                <Typography variant="body1">Symptoms: {selectedPatient.symptoms}</Typography>
-                <Box mt={3} display="flex" justifyContent="space-around">
-                  <Button variant="contained" color="error" onClick={() => handleDecline(selectedPatient.id)}>
-                    Decline
-                  </Button>
-                  <Button variant="contained" color="success" onClick={() => handleComplete(selectedPatient.id)}>
-                    Completed
-                  </Button>
-                </Box>
+                <Avatar src={selectedPatient.d_id.img} sx={{ width: 64, height: 64, mx: "auto", mb: 2 }} />
+                <Typography variant="h6">{selectedPatient.d_id?.name}</Typography>
+                <Typography variant="body1">Speciality: {selectedPatient.d_id?.speciality}</Typography>
+                <Typography variant="body1">Hospital: {selectedPatient.d_id?.hospitalId.name
+                }</Typography>
               </Box>
             )}
           </DialogContent>
