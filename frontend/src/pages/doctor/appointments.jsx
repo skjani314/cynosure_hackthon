@@ -198,10 +198,10 @@ const DoctorDashboard = () => {
                 <Typography variant="body1">Address: {selectedPatient.pid.address}</Typography>
                 <Typography variant="body1">Symptoms: {selectedPatient.symptoms}</Typography>
                 <Box mt={3} display="flex" justifyContent="space-around">
-                  <Button variant="contained" color="error" onClick={() => handleDecline(selectedPatient.id)}>
+                  <Button variant="contained" color="error" onClick={() => handleDecline(selectedPatient._id)}>
                     Decline
                   </Button>
-                  <Button variant="contained" color="success" onClick={() => handleComplete(selectedPatient.id)}>
+                  <Button variant="contained" color="success" onClick={() => handleComplete(selectedPatient._id)}>
                     Completed
                   </Button>
                 </Box>

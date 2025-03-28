@@ -35,6 +35,7 @@ import { useTheme } from "@mui/material/styles";
 import { Clock, UserCheck, Users, AlertCircle, X, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
+
   
 const services = () => {
   const theme = useTheme();
@@ -163,6 +164,7 @@ const services = () => {
         {/* Patient Details Modal */}
         <Dialog open={!!selectedPatient} onClose={() => setSelectedPatient(null)} fullWidth maxWidth="sm">
           <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            Doctor Details
             Doctor Details
             <Button onClick={() => setSelectedPatient(null)}>
               <X size={24} />

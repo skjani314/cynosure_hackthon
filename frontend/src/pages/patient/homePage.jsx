@@ -10,7 +10,7 @@ import { userContex } from "../../Context/Context";
 
 const PatientHome = () => {
 
-  const {user} =useContext(userContex)
+  const {user,callGemini,symptoms,suggestion} =useContext(userContex)
 const [pincode,setPincode]=useState(523002);
 
 
@@ -57,9 +57,11 @@ const bookApointment=async(d_id)=>
 {
   try {
     const response=await axios.post('http://localhost:3000/appointments/add',{pid:user._id,d_id})
+    const response=await axios.post('http://localhost:3000/appointments/add',{pid:user._id,d_id})
     toast.success("Booked Appointment successfully ")
     
     console.log(response)
+    console.log(response+"booked data")
     // console.log(user)
   } catch (error) {
     toast.error(error)
@@ -69,6 +71,9 @@ const bookApointment=async(d_id)=>
   useEffect(()=>
   {
        getDoctors();
+      
+       
+       
        
   },[pincode]);
 console.log(search_result);
@@ -124,7 +129,15 @@ console.log(search_result);
                 </Link>
               ))}
             </div>
-          </motion.div>:null
+          </motion.div>:<div className="w-fill items-center bg-white py-3 px-3 rounded-2xl mb-2.5">
+
+{
+  suggestion!=""?` Based on symptoms, we suggest you consult ${suggestion}. However, we can't find one near you.`:'without symptoms or location we cant give suggestions'
+}
+
+
+
+</div>
 
             }
 
@@ -175,7 +188,10 @@ console.log(search_result);
             className="mb-8"
           >
             <h2 className="text-xl font-bold text-white mb-4">Recomended Doctors</h2>
+
+             {search_result.length>0?<>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+             
               {doctors.map((action, index) => (
                 <Link 
                   key={action._id}
@@ -197,7 +213,9 @@ console.log(search_result);
                   <button className="w-full bg-amber-200 px-5 py-3 items-center justify-center mt-9 hover:cursor-pointer" onClick={()=>{bookApointment(action._id)}}>Book Appointment</button>
                 </Link>
               ))}
-            </div>
+            </div></>:<>
+              
+            </>}
           </motion.div>
 
           {/* Health Stats & Notifications */}

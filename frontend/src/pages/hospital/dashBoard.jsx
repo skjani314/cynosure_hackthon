@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Plus, Pencil, Trash2 } from "lucide-react";
-import { useNavigate } from "react-router-dom"; // ✅ Import useNavigate
+import { useNavigate } from "react-router-dom"; 
 import toast from "react-hot-toast";
 import HospitalNavbar from "./navbar";
 import axios from "axios";
 import DoctorCard from "../doctor/DoctorCard.jsx";
 
 function HospitalDashboard() {
-  const navigate = useNavigate(); // ✅ Initialize navigation
+  const navigate = useNavigate();
 
   const [doctors, setDoctors] = useState([
     {
@@ -78,7 +78,7 @@ getDoctors()
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-semibold text-gray-800">Our Doctors</h2>
           
-          {/* ✅ Navigate to form page when clicked */}
+        
           <button
             onClick={() => navigate("/hospital/form")} 
             className="flex items-center gap-2 bg-[#4299E1] text-white px-4 py-2 rounded-lg hover:bg-[#3182CE] transition-colors"
