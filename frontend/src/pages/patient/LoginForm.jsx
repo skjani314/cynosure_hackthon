@@ -1,23 +1,24 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const PatientLogin = () => {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    name: "",
   });
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-
-    if (formData.email && formData.password) {
-      alert(isLogin ? "Login successful!" : "Account created!");
-      setFormData({ email: "", password: "", name: "" }); // ✅ Clear form fields
-      navigate("/"); // ✅ Redirect to homepage after login/signup
+    try {
+      const response = await axios.post("http://localhost:5000/api/patient/login", formData);
+      alert("Login successful!");
+      localStorage.setItem("patientToken", response.data.token); // Save token for authentication
+      navigate("/"); // Redirect to homepage
+    } catch (err) {
+      setError(err.response?.data?.message || "Login failed. Please try again.");
     }
   };
 
@@ -25,25 +26,12 @@ const PatientLogin = () => {
     <div className="min-h-screen flex items-center justify-center pt-20 px-4">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
         <h2 className="text-center text-3xl font-extrabold text-gray-900">
-          {isLogin ? "Sign in to your account" : "Create new account"}
+          Sign in to your account
         </h2>
 
-        <form className="mt-6 space-y-6" onSubmit={handleSubmit}>
-          {!isLogin && (
-            <div>
-              <label htmlFor="name" className="sr-only">Full Name</label>
-              <input
-                id="name"
-                type="text"
-                placeholder="Full Name"
-                required
-                className="w-full px-4 py-2 border rounded-lg focus:ring-[#fbc2eb] focus:border-[#fbc2eb]"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              />
-            </div>
-          )}
+        {error && <p className="text-red-500 text-center">{error}</p>}
 
+        <form className="mt-6 space-y-6" onSubmit={handleSubmit}>
           <div>
             <label htmlFor="email" className="sr-only">Email address</label>
             <input
@@ -74,13 +62,13 @@ const PatientLogin = () => {
             type="submit"
             className="w-full py-2 text-white font-medium rounded-md bg-gradient-to-r from-[#fbc2eb] to-[#a6c1ee] hover:opacity-90"
           >
-            {isLogin ? "Sign in" : "Sign up"}
+            Sign in
           </button>
         </form>
 
         <div className="text-center">
-          <button className="text-[#a6c1ee] hover:text-[#fbc2eb]" onClick={() => setIsLogin(!isLogin)}>
-            {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
+          <button className="text-[#a6c1ee] hover:text-[#fbc2eb]" onClick={() => navigate("/patient/signup")}>
+            Don't have an account? Sign up
           </button>
         </div>
       </div>

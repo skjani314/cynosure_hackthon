@@ -19,6 +19,7 @@
     "axios": "^1.8.4",
     "axois": "^0.0.1-security",
     "boostrap": "^2.0.0",
+    "bootstrap": "^5.3.3",
     "cross-fetch": "^4.1.0",
     "framer-motion": "^12.6.2",
     "lucide-react": "^0.484.0",

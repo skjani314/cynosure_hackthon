@@ -44,20 +44,22 @@ const HomePage = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee]">
       {/* Website Name - MediQ */}
-      <motion.h1
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-6xl font-extrabold text-blue-900 mt-10 mb-6 tracking-wide drop-shadow-lg"
-      >
-        Medi<span className="text-blue-500">Q</span>
-      </motion.h1>
+      <div className="w-full bg-white py-4 flex justify-center shadow-md">
+        <motion.h1
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-4xl font-extrabold text-blue-900 tracking-wide drop-shadow-lg"
+        >
+          Medi<span className="text-blue-500">Q</span>
+        </motion.h1>
+      </div>
 
       {/* Hero Carousel */}
-      <div className="w-full max-w-5xl mx-auto">
+      <div className="w-full max-w-5xl mx-auto mt-8">
         <Slider {...settings}>
           {slides.map((slide, index) => (
-            <div key={index} className="relative h-[80vh] flex items-center justify-center text-center text-white">
+            <div key={index} className="relative h-[60vh] flex items-end justify-center text-center text-white pb-12">
               <div
                 className="absolute inset-0 bg-cover bg-center"
                 style={{
@@ -65,7 +67,7 @@ const HomePage = () => {
                 }}
               ></div>
               <div className="relative px-4">
-                <h2 className="text-5xl font-bold mb-4 drop-shadow-lg">{slide.title}</h2>
+                <h2 className="text-4xl font-bold mb-3 drop-shadow-lg">{slide.title}</h2>
                 <p className="text-lg drop-shadow-lg">{slide.subtitle}</p>
               </div>
             </div>
@@ -74,7 +76,7 @@ const HomePage = () => {
       </div>
 
       {/* Role-Based Portals */}
-      <div className="py-16 px-4 w-full max-w-6xl flex flex-wrap justify-center gap-8">
+      <div className="py-12 px-4 w-full max-w-6xl flex flex-wrap justify-center gap-8">
         {/* Patient Portal */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -86,7 +88,7 @@ const HomePage = () => {
           <h3 className="text-2xl font-semibold mt-4 text-gray-800">Patient Portal</h3>
           <p className="text-gray-600 mt-2">Find specialists, book appointments, and join virtual queues.</p>
           <button
-            onClick={() => navigate("/patient/home")} // ✅ Fixed: Redirects to patient home page
+            onClick={() => navigate("/patient/signup")} // Updated to go to the signup page
             className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700"
           >
             Access Patient Portal
@@ -134,3 +136,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
