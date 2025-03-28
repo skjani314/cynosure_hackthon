@@ -1,5 +1,5 @@
 import React, { useState, useEffect,useContext } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
 import { MdHomeRepairService, MdOutlineMenu, MdClose } from "react-icons/md";
 import { FaClipboardList, FaSearch, FaMapMarkerAlt } from "react-icons/fa";
@@ -11,13 +11,13 @@ import { Input } from 'antd';
 import { userContex } from "../../Context/Context";
 import axios from "axios";
 const { TextArea } = Input;
-const PatientNavbar = () => {
+const PatientNavbar = ({doctors,pincode,setPincode,setSearchResult}) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [location, setLocation] = useState("Ongole");
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [searchSuggestions, setSearchSuggestions] = useState([]);
-const [pincode,setPincode]=useState(523002);
+const navigate=useNavigate();
 const {symptoms,setSymptoms,callGemini}=useContext(userContex);
 const [isModel,setModel]=useState(false);
 
@@ -32,11 +32,13 @@ const [isModel,setModel]=useState(false);
           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`
         );
         const data = await response.json();
-        console.log(data);
         if (data.address) {
           setLocation(data.address.city || data.address.town || "Unknown");
+          setPincode(data.address.postcode || 523002);
           
         }
+        console.log(data);
+
       });
     }
   }, []);
@@ -61,10 +63,8 @@ const [isModel,setModel]=useState(false);
       setSearchSuggestions([]);
       return;
     }
-
-    // Mock search suggestions
-    const mockData = ["Heart Specialist", "Dental Clinic", "Cancer Treatment", "City Hospital", "General Physician"];
-    setSearchSuggestions(mockData.filter((item) => item.toLowerCase().includes(query.toLowerCase())));
+    
+    setSearchSuggestions(doctors.filter((item) => item.name.toLowerCase().includes(query.toLowerCase())));
   };
 
 
@@ -83,7 +83,9 @@ const url = import.meta.env.VITE_BACKEND_URL + "/hospital/getsymptoms";
 
 const result=await axios.post(url,form_data);
 console.log(result);
-
+setSearchResult(prev=>([...result.data.doctors]))
+setModel(false);
+setSymptoms("");
 
 }
 catch(err){
@@ -106,7 +108,9 @@ useEffect(()=>{
 
   const handleLogout = () => {
     // Clear any session storage or authentication tokens (if applicable)
-    navigate("/hospital/login"); // Redirect to hospital login page
+    localStorage.removeItem("accessToken");
+
+    navigate("/"); // Redirect to hospital login page
   };
 
   return (
@@ -142,11 +146,12 @@ useEffect(()=>{
                     key={index}
                     className="p-2 hover:bg-gray-200 cursor-pointer"
                     onClick={() => {
-                      setSearchQuery(suggestion);
+                      setSearchQuery(suggestion.name);
+                      setSearchResult(prev=>([suggestion]));
                       setSearchSuggestions([]);
                     }}
                   >
-                    {suggestion}
+                    {suggestion.name}
                   </li>
                 ))}
               </ul>
