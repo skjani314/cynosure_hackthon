@@ -56,10 +56,10 @@ const [search_result,setSearchResult]=useState([]);
 const bookApointment=async(d_id)=>
 {
   try {
-    const response=await axios.post('http://localhost:3000/appointments/add',{pid:user.id,d_id})
+    const response=await axios.post('http://localhost:3000/appointments/add',{pid:user._id,d_id})
     toast.success("Booked Appointment successfully ")
     
-    // console.log(response)
+    console.log(response+"booked data")
     // console.log(user)
   } catch (error) {
     toast.error(error)
@@ -127,7 +127,15 @@ console.log(search_result);
                 </Link>
               ))}
             </div>
-          </motion.div>:null
+          </motion.div>:<div className="w-fill items-center bg-white py-3 px-3 rounded-2xl mb-2.5">
+
+{
+  suggestion!=""?` Based on symptoms, we suggest you consult ${suggestion}. However, we can't find one near you.`:'without symptoms or location we cant give suggestions'
+}
+
+
+
+</div>
 
             }
 
@@ -179,7 +187,7 @@ console.log(search_result);
           >
             <h2 className="text-xl font-bold text-white mb-4">Recomended Doctors</h2>
 
-             {doctors.length>0?<>
+             {search_result.length>0?<>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
              
               {doctors.map((action, index) => (
@@ -204,7 +212,7 @@ console.log(search_result);
                 </Link>
               ))}
             </div></>:<>
-              <div className="w-fill items-center bg-white py-3 px-3 rounded-2xl">Based on Symptoms you we suggest you to  consult &nbsp;{suggestion}&nbsp; we can't find near you</div>
+              
             </>}
           </motion.div>
 
