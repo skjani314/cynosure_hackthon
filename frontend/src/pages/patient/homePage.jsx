@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import PatientNavbar from "./navbar";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Calendar, ClipboardList, FileText, MessageSquare, User, Bell } from "lucide-react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { userContex } from "../../Context/Context";
+
 
 const PatientHome = () => {
+
+  const {user} =useContext(userContex)
   const quickActions = [
     {
       icon: <Calendar className="h-6 w-6 text-blue-600" />,
@@ -45,7 +49,19 @@ const PatientHome = () => {
       toast.error(error);
     }
   }
-
+const bookApointment=async(d_id)=>
+{
+  try {
+    const response=await axios.post('http://localhost:3000/appointments/add',{pid:user.id,d_id})
+    toast.success("Booked Appointment successfully ")
+    
+    // console.log(response)
+    // console.log(user)
+  } catch (error) {
+    toast.error(error)
+    console.log(error)
+  }
+}
   useEffect(()=>
   {
        getDoctors();
@@ -141,7 +157,7 @@ const PatientHome = () => {
                       
                     ))}
                   </div>
-                  <button className="w-full bg-amber-200 px-5 py-3 items-center justify-center mt-9 hover:cursor-pointer">Book Appointment</button>
+                  <button className="w-full bg-amber-200 px-5 py-3 items-center justify-center mt-9 hover:cursor-pointer" onClick={()=>{bookApointment(action.id)}}>Book Appointment</button>
                 </Link>
               ))}
             </div>

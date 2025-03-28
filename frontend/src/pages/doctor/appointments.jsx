@@ -27,7 +27,7 @@ import { Clock, UserCheck, Users, AlertCircle, X, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
- 
+  
 const DoctorDashboard = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
@@ -68,10 +68,10 @@ const DoctorDashboard = () => {
     profilePic: "https://via.placeholder.com/50", // Replace with actual image
   };
 
-  const patients = [
-    { id: 1, token: "A001", name: "John Doe", age: 30, symptoms: "Fever, Headache", profilePic: "https://via.placeholder.com/50" },
-    { id: 2, token: "A002", name: "Jane Smith", age: 25, symptoms: "Cough, Sore throat", profilePic: "https://via.placeholder.com/50" },
-  ];
+  // const patients = [
+  //   { id: 1, token: "A001", name: "John Doe", age: 30, symptoms: "Fever, Headache", profilePic: "https://via.placeholder.com/50" },
+  //   { id: 2, token: "A002", name: "Jane Smith", age: 25, symptoms: "Cough, Sore throat", profilePic: "https://via.placeholder.com/50" },
+  // ];
 
   const stats = [
     { icon: <Users size={28} />, label: "In Queue", value: "12" },
