@@ -7,6 +7,9 @@ import toast from "react-hot-toast";
 import axios from "axios";
 
 const PatientHome = () => {
+const [pincode,setPincode]=useState(523002);
+
+
   const quickActions = [
     {
       icon: <Calendar className="h-6 w-6 text-blue-600" />,
@@ -33,14 +36,15 @@ const PatientHome = () => {
       link: "/patient/messages"
     }
   ];
+const [search_result,setSearchResult]=useState([]);
   const [doctors,setDoctors]=useState([]);
 
   const getDoctors=async()=>{
     try {
       const response=await axios.post('http://localhost:3000/hospital/get-by-location',{
-        "pincode":"522403"
+        "pincode":pincode
     })
-    setDoctors(response.data.doctors)
+    setDoctors(response.data.doctors);
     } catch (error) {
       toast.error(error);
     }
@@ -50,8 +54,8 @@ const PatientHome = () => {
   {
        getDoctors();
        
-  },)
-
+  },[pincode]);
+console.log(search_result);
  
   const upcomingAppointment = {
     doctor: "Dr. Emma Wilson",
@@ -63,7 +67,7 @@ const PatientHome = () => {
 
   return (
     <>
-      <PatientNavbar />
+      <PatientNavbar doctors={doctors} pincode={pincode} setPincode={setPincode} setSearchResult={setSearchResult} />
       <div className="pt-24 min-h-screen px-4 pb-16" style={{ backgroundImage: "linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%)" }}>
         <div className="max-w-6xl mx-auto">
           <motion.div 
@@ -74,6 +78,39 @@ const PatientHome = () => {
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Welcome back, John</h1>
             <p className="text-white/80 mb-8">Here's an overview of your health information</p>
           </motion.div>
+
+{search_result.length>0?
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="mb-8"
+          >
+            <h2 className="text-xl font-bold text-white mb-4">Search Result</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {search_result.map((action, index) => (
+                <Link 
+                  key={action._id}
+                  to={action.link}
+                  className="bg-white/90 rounded-xl p-5 shadow-md hover:shadow-lg transition-shadow flex flex-col h-full"
+                >
+                  <div className="p-2 w-12 h-12 rounded-full bg-gray-50 flex items-center justify-center mb-4">
+                    <img src={action.img} alt="" className="rounded-full" />
+                  </div>
+                  <h3 className="font-semibold text-gray-800 mb-2">{action.name}</h3>
+                  <p className="text-gray-600 text-sm">{action.speciality}</p>
+                  
+                  <div>
+                    {[...Array(action.rating)].map((_, index) => (
+                      <span key={index}>⭐</span>
+                    ))}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </motion.div>:null
+
+            }
 
           {/* Next Appointment Card */}
           <motion.div
@@ -148,9 +185,6 @@ const PatientHome = () => {
           {/* Health Stats & Notifications */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-           
-
-         
           </div>
         </div>
       </div>

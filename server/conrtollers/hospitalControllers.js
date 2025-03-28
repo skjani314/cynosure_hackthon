@@ -184,12 +184,18 @@ export const getDoctorBySymptoms=async (req,res,next)=>{
   try {
     const {pincode,specialist}=req.body;
     console.log(req.body);
-    const doctors=await DoctorModel.find({pincode,speciality:specialist});
-    if(!doctors)
+    const cleanedSpecialist = specialist.replace(/\r?\n/g, "").trim();
+
+    const regex = new RegExp(cleanedSpecialist, "i");
+console.log(pincode)
+    const doctors = await DoctorModel.find({
+      pincode,
+      speciality: { $regex: regex,} 
+    });    if(!doctors)
     {
       next(new Error("Doctors not found in the Location"))
     }
-
+ 
     res.json({success:true,message:"Doctors fetched Successfully",doctors})
     
 
