@@ -56,7 +56,7 @@ const [search_result,setSearchResult]=useState([]);
 const bookApointment=async(d_id)=>
 {
   try {
-    const response=await axios.post('http://localhost:3000/appointments/add',{pid:user._id,d_id})
+    // const response=await axios.post('http://localhost:3000/appointments/add',{pid:user._id,d_id})
     const response=await axios.post('http://localhost:3000/appointments/add',{pid:user._id,d_id})
     toast.success("Booked Appointment successfully ")
     

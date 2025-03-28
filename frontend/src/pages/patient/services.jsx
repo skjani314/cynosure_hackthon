@@ -117,7 +117,7 @@ const services = () => {
           
           {/* Doctor Profile Section */}
           <Box display="flex" alignItems="center">
-            <Typography sx={{ mr: 2, fontWeight: "bold" }}>{user.name}</Typography>
+            <Typography sx={{ mr: 2, fontWeight: "bold" }}>{user?.name}</Typography>
             <Avatar src={doctor.profilePic} sx={{ width: 40, height: 40, cursor: "pointer" }} onClick={(e) => setAnchorEl(e.currentTarget)} />
             
             {/* Profile Menu */}
