@@ -86,7 +86,7 @@ const HomePage = () => {
           <h3 className="text-2xl font-semibold mt-4 text-gray-800">Patient Portal</h3>
           <p className="text-gray-600 mt-2">Find specialists, book appointments, and join virtual queues.</p>
           <button
-            onClick={() => navigate("/patient/home")} // ✅ Fixed: Redirects to patient home page
+            onClick={() => navigate("/patient/login")} // ✅ Fixed: Redirects to patient home page
             className="mt-4 px-6 py-3 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700"
           >
             Access Patient Portal

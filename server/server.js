@@ -13,9 +13,7 @@ app.use(express.json());
 
 ConnectDb();
 connectCloudinary();
-app.use(cors(
-    
-));
+app.use(cors());
 app.use(upload.single('img'));
 app.get('/', (req, res) => {
     res.send(`<h2>Welcome to the server</h2>`);
@@ -24,6 +22,7 @@ app.get('/', (req, res) => {
 app.use('/auth',AuthRouter);
 app.use('/hospital',Hospitalrouter)
 app.use('/appointments',appointmentRouter);
+
 app.use((err, req, res, next) => {
     console.error(err.stack);
     return res.status(500).send({success:false,message:err})

@@ -10,6 +10,7 @@ const HospitalNavbar = () => {
   // Logout Function
   const handleLogout = () => {
     // Clear any session storage or authentication tokens (if applicable)
+    localStorage.removeItem("accessToken");
     navigate("/hospital/login"); // Redirect to hospital login page
   };
 

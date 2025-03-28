@@ -108,12 +108,7 @@ export const addDoctor = async (req, res, next) => {
         .status(400)
         .json({ success: false, message: "Please provide all details" });
     }
-    const hospital = await HospitalModel.findById(hospitalId);
-    if (!hospital) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Hospital not found" });
-    }
+
                 const hashpassword = await bcrypt.hash("rgukt@123", 10);
   
     const newDoctor = new DoctorModel({
@@ -122,7 +117,7 @@ export const addDoctor = async (req, res, next) => {
       rating,
       active,
       speciality,
-      hospitalId,
+      hospitalId:req.id,
       password:hashpassword,
       pincode
     });
@@ -165,6 +160,7 @@ export const getDoctorByLocation=async(req,res,next)=>
       try {
         const {pincode}=req.body;
         const doctors=await DoctorModel.find({pincode});
+        console.log(doctors);
         if(!doctors)
         {
           next(new Error("Doctors not found in the Location"))

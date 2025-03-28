@@ -8,16 +8,61 @@ const PatientLogin = () => {
     email: "",
     password: "",
     name: "",
+    pincode:"",
+    address:"",
+    mobile:"",
+    age:""
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    try{
+    if(isLogin){
+      const url = import.meta.env.VITE_BACKEND_URL + "/auth/login";
+    console.log(formData);
+    const form_data=new FormData();
+    form_data.append("email",formData.email);
+    form_data.append("password",formData.password);
+    form_data.append("role","patient");
+    
+      const response = await axios.post(url,form_data);
+      localStorage.setItem("accessToken", response.data);
+      setUser(response.data);
+      setFormData({
+        email: "",
+        password: "",
+      })
+      navigate("/patient/home"); 
+    }
+    else{
 
-    if (formData.email && formData.password) {
-      alert(isLogin ? "Login successful!" : "Account created!");
-      setFormData({ email: "", password: "", name: "" }); // ✅ Clear form fields
-      navigate("/"); // ✅ Redirect to homepage after login/signup
+      const url = import.meta.env.VITE_BACKEND_URL + "/auth/register";
+      console.log(formData);
+      const form_data=new FormData();
+      form_data.append("email",formData.email);
+      form_data.append("password",formData.password);
+      form_data.append("address",formData.address);
+      form_data.append("pincode",formData.pincode);
+      form_data.append("")
+      
+        const response = await axios.post(url,form_data);
+        localStorage.setItem("accessToken", response.data);
+        setUser(response.data);
+        setFormData({
+          email: "",
+          password: "",
+        })
+        navigate("/patient/home"); 
+      
+
+
+
+
+    }
+    }catch(err){
+    
+      console.error(err);
+      toast.error("something went wrong");
     }
   };
 
