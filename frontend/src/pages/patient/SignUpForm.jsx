@@ -29,7 +29,7 @@ const PatientSignUp = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center pt-20 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee] px-4">
       <div className="max-w-md w-full space-y-8 bg-white p-8 rounded-xl shadow-lg">
         <h2 className="text-center text-3xl font-extrabold text-gray-900">
           Create New Account
@@ -131,3 +131,4 @@ const PatientSignUp = () => {
 };
 
 export default PatientSignUp;
+
