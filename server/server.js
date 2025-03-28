@@ -26,7 +26,7 @@ app.use('/hospital',Hospitalrouter)
 app.use('/appointments',appointmentRouter);
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    return res.status(500).send({success:false,message:error})
+    return res.status(500).send({success:false,message:err})
 });
 
 app.listen(3000, () => {
