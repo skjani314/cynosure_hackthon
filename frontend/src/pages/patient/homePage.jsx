@@ -49,17 +49,17 @@ const [search_result,setSearchResult]=useState([]);
         "pincode":pincode
     })
     setDoctors(response.data.doctors);
-    } catch (error) {
+    } catch (error) { 
       toast.error(error);
     }
   }
 const bookApointment=async(d_id)=>
 {
   try {
-    const response=await axios.post('http://localhost:3000/appointments/add',{pid:user.id,d_id})
+    const response=await axios.post('http://localhost:3000/appointments/add',{pid:user._id,d_id})
     toast.success("Booked Appointment successfully ")
     
-    // console.log(response)
+    console.log(response)
     // console.log(user)
   } catch (error) {
     toast.error(error)
@@ -194,7 +194,7 @@ console.log(search_result);
                       
                     ))}
                   </div>
-                  <button className="w-full bg-amber-200 px-5 py-3 items-center justify-center mt-9 hover:cursor-pointer" onClick={()=>{bookApointment(action.id)}}>Book Appointment</button>
+                  <button className="w-full bg-amber-200 px-5 py-3 items-center justify-center mt-9 hover:cursor-pointer" onClick={()=>{bookApointment(action._id)}}>Book Appointment</button>
                 </Link>
               ))}
             </div>

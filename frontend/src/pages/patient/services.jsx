@@ -43,13 +43,14 @@ const services = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
  const [appointments,setAppointments]=useState([])
+ const {user}=useContext(userContex);
 
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/appointments/get", {
-          params: { role: "patient", id: "67e56d35aec2eb30f52886fc" },
+        const response = await axios.get("http://localhost:3000/appointments/get/?role="+"patient"+"&id="+user._id, {
+          params: {  },
         });
   
         console.log("Appointments Data:", response.data);
@@ -61,8 +62,8 @@ const services = () => {
   
     fetchAppointments();
     // console.log(appointments +"This is the one")
-  }, []); 
-  
+  }, [user]); 
+  console.log(user);
   useEffect(() => {
     if (appointments.length > 0 && appointments[0]?.pid) {
       console.log("Updated Appointments:", appointments[0].token);
@@ -99,6 +100,7 @@ const services = () => {
   };
 
   const handleLogout = () => {
+
     navigate("/doctor/login");
   };
 
@@ -114,7 +116,7 @@ const services = () => {
           
           {/* Doctor Profile Section */}
           <Box display="flex" alignItems="center">
-            <Typography sx={{ mr: 2, fontWeight: "bold" }}>{doctor.name}</Typography>
+            <Typography sx={{ mr: 2, fontWeight: "bold" }}>{user.name}</Typography>
             <Avatar src={doctor.profilePic} sx={{ width: 40, height: 40, cursor: "pointer" }} onClick={(e) => setAnchorEl(e.currentTarget)} />
             
             {/* Profile Menu */}
@@ -161,7 +163,7 @@ const services = () => {
         {/* Patient Details Modal */}
         <Dialog open={!!selectedPatient} onClose={() => setSelectedPatient(null)} fullWidth maxWidth="sm">
           <DialogTitle sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            Patient Details
+            Doctor Details
             <Button onClick={() => setSelectedPatient(null)}>
               <X size={24} />
             </Button>
@@ -170,19 +172,9 @@ const services = () => {
             {selectedPatient && (
               <Box textAlign="center">
                 <Avatar src={selectedPatient.pid.img} sx={{ width: 64, height: 64, mx: "auto", mb: 2 }} />
-                <Typography variant="h6">{selectedPatient.did.name}</Typography>
-                <Typography variant="body1">Age: {selectedPatient.pid.age}</Typography>
-                <Typography variant="body1">Mobile: {selectedPatient.pid.mobile}</Typography>
-                <Typography variant="body1">Address: {selectedPatient.pid.address}</Typography>
-                <Typography variant="body1">Symptoms: {selectedPatient.symptoms}</Typography>
-                <Box mt={3} display="flex" justifyContent="space-around">
-                  <Button variant="contained" color="error" onClick={() => handleDecline(selectedPatient.id)}>
-                    Decline
-                  </Button>
-                  <Button variant="contained" color="success" onClick={() => handleComplete(selectedPatient.id)}>
-                    Completed
-                  </Button>
-                </Box>
+                <Typography variant="h6">{selectedPatient.d_id?.name}</Typography>
+                <Typography variant="body1">Email: {selectedPatient.d_id?.email}</Typography>
+               
               </Box>
             )}
           </DialogContent>
