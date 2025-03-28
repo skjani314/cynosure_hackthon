@@ -20,7 +20,7 @@ const getAppointments=async (req,res,next)=>{
 try{
 
 const {role,id}=req.query;
-
+console.log(req.query);
 let data=[];
 
 if(role=='patient'){

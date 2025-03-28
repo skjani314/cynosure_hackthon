@@ -15,6 +15,7 @@ try{
     }
 
     const token = authHeader.split(" ")[1]; 
+    console.log(token);
     if (!token) {
         return next(new Error("User Not Found"));
     }
