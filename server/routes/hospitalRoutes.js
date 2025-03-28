@@ -8,7 +8,7 @@ Hospitalrouter.post('/create',createHospital);
 Hospitalrouter.delete('/delete',deleteHospital);
 Hospitalrouter.put('/update',UpdateHospital)
 Hospitalrouter.get('/getdoctors',patientMiddleWare,showDoctors)
-Hospitalrouter.post('/add-doctor',addDoctor);
+Hospitalrouter.post('/add-doctor',patientMiddleWare,addDoctor);
 Hospitalrouter.put('/update-isavailable',UpdateDoctorStatus)
 Hospitalrouter.post('/get-by-location',getDoctorByLocation)
 Hospitalrouter.post('/getsymptoms',getDoctorBySymptoms);

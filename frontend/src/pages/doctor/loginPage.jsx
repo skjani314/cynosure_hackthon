@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { userContex } from "../../Context/Context";
 
 const DoctorLogin = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({ email: "", password: "" });
-
+const {user,setUser}=useContext(userContex);
   const handleSubmit = async(e) => {
     e.preventDefault();
     
@@ -15,7 +16,21 @@ const DoctorLogin = () => {
         email: formData.email,
         password: formData.password,
         role: "doctor",});
-        console.log(response);
+        localStorage.setItem("accessToken", response.data);
+        
+        const url = import.meta.env.VITE_BACKEND_URL + "/auth/";
+      const result=await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${response.data}`,
+          "Content-Type": "application/json",
+        },
+      });
+      setUser(result.data);
+  setFormData({
+    email: "",
+    password: "",
+  })
+      
 
         navigate('/doctor/dashboard')
       

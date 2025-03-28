@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Container,
   Grid,
@@ -27,6 +27,7 @@ import { Clock, UserCheck, Users, AlertCircle, X, LogOut } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { userContex } from "../../Context/Context";
   
 const DoctorDashboard = () => {
   const theme = useTheme();
@@ -35,13 +36,14 @@ const DoctorDashboard = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
  const [appointments,setAppointments]=useState([])
+ const {user}=useContext(userContex);
 
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const response = await axios.get("http://localhost:3000/appointments/get", {
-          params: { role: "doctor", id: "67e567c263232a1e3f91934d" },
+          params: { role: "doctor", id: user?._id },
         });
   
         console.log("Appointments Data:", response.data);
@@ -53,7 +55,7 @@ const DoctorDashboard = () => {
   
     fetchAppointments();
     // console.log(appointments +"This is the one")
-  }, []); 
+  }, [user]); 
   
   useEffect(() => {
     if (appointments.length > 0 && appointments[0]?.pid) {
@@ -79,6 +81,7 @@ const DoctorDashboard = () => {
     { icon: <Clock size={28} />, label: "Avg. Wait Time", value: "25m" },
     { icon: <AlertCircle size={28} />, label: "Urgent Cases", value: "3" },
   ];
+  console.log(user)
 
   const handleDecline = (id) => {
     alert(`Declined patient ID: ${id}`);
@@ -91,6 +94,8 @@ const DoctorDashboard = () => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem("accessToken");
+
     navigate("/doctor/login");
   };
 
@@ -106,7 +111,7 @@ const DoctorDashboard = () => {
           
           {/* Doctor Profile Section */}
           <Box display="flex" alignItems="center">
-            <Typography sx={{ mr: 2, fontWeight: "bold" }}>{doctor.name}</Typography>
+            <Typography sx={{ mr: 2, fontWeight: "bold" }}>{user?.name}</Typography>
             <Avatar src={doctor.profilePic} sx={{ width: 40, height: 40, cursor: "pointer" }} onClick={(e) => setAnchorEl(e.currentTarget)} />
             
             {/* Profile Menu */}
